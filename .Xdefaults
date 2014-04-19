@@ -1,0 +1,89 @@
+Xft.dpi: 100
+Xft.antialias: true
+Xft.hinting:  true
+Xft.hintstyle:  hintfull
+Xft.rgba: none 
+urxvt*font: xft:Terminus:size=10
+urxvt.scrollBar: false
+!urxvt*font: xft:DejaVu Sans Mono:size=10
+
+! Molokai theme
+*background: #101010
+*foreground: #d0d0d0
+*cursorColor: #d0d0d0
+*color0: #101010
+*color1: #960050
+*color2: #66aa11
+*color3: #c47f2c
+*color4: #30309b
+*color5: #7e40a5
+*color6: #3579a8
+*color7: #9999aa
+*color8: #303030
+*color9: #ff0090
+*color10: #80ff00
+*color11: #ffba68
+*color12: #5f5fee
+*color13: #bb88dd
+*color14: #4eb4fa
+*color15: #d0d0d0
+
+!! jwr low contrast
+!
+!!black
+!!*color0: #222222
+!!*color8: #454545
+!
+!!red
+!*color1: #9E5641
+!*color9: #CC896D
+!!green
+!*color2: #6C7E55
+!*color10: #C4DF90
+!!yellow
+!*color3: #CAAF2B
+!*color11: #FFE080
+!!blue
+!*color4: #7FB8D8
+!*color12: #B8DDEA
+!!magenta
+!*color5: #956D9D
+!*color13: #C18FCB
+!!cyan
+!*color6: #4c8ea1
+!*color14: #6bc1d0
+!!white
+!*color7: #808080
+!*color15: #cdcdcd
+!
+!*borderColor: #343434
+!*background: #303030
+!*foreground: #cdcdcd
+
+
+!*color0:			#000000
+!*color8:			#272727
+!! Red
+!*color1:			#a53700
+!*color9:			#d14600
+!! Green
+!*color2:			#658e4b
+!*color10:			#84bc62
+!! Yellow
+!*color3:			#8e774d
+!*color11:			#c4a568
+!! Blue
+!*color4:			#4c64b5
+!*color12:			#6b8dff
+!! Magenta
+!*color5:			#75507b
+!*color13:			#ad7fa8
+!! Cyan
+!*color6:			#388c91
+!*color14:			#46aeb5
+!! White
+!*color7:			#bbbbbb
+!*color15:			#eeeeee
+!
+!*foreground: #bbbbbb
+!*background: #000000
