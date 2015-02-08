@@ -13,6 +13,7 @@ import System.IO
 import Data.Monoid
 import Data.Maybe
 import System.Exit
+import Control.Applicative ((<$>))
  
 import qualified XMonad.StackSet as W
 import qualified XMonad.Layout.Spacing as S
@@ -132,6 +133,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
  
     -- Expand the master area
     , ((modm,               xK_l     ), sendMessage Expand)
+    , ((modm,               xK_o     ), sendMessage Expand)
  
     -- Push window back into tiling
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)
@@ -253,7 +255,7 @@ myLayout = avoidStruts layoutsWithBar
     delta   = 3/100
     layoutsWithBar =     renamed [Replace "tile"] tiled 
                      ||| renamed [Replace "btile"] (Mirror tiled)
-                     ||| renamed [Replace "mon"] Full
+                     ||| renamed [Replace "mon"] (noBorders Full)
 
  
 ------------------------------------------------------------------------
@@ -329,7 +331,11 @@ myStartupHook = return ()
 main = do 
     xmproc <- spawnPipe "xmobar /home/blake/.xmobarrc"
     xmonad $ defaults
-        { manageHook = (isFullscreen --> doFullFloat) <+> manageDocks <+> manageHook defaults
+        { manageHook = (isFullscreen --> doFullFloat) 
+                     <+> (not <$> isDialog --> doF W.swapDown)
+                     <+> manageDocks 
+                     <+> myManageHook 
+                     <+> manageHook defaults
         , layoutHook = layoutHook defaults
         , logHook = dynamicLogWithPP xmobarPP
                         { ppOutput = hPutStrLn xmproc
