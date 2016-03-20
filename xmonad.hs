@@ -291,7 +291,7 @@ myManageHook = composeAll
 -- It will add EWMH event handling to your custom event hooks by
 -- combining them with ewmhDesktopsEventHook.
 --
-myEventHook = mempty
+myEventHook = docksEventHook
  
 ------------------------------------------------------------------------
 -- Status bars and logging
@@ -336,7 +336,7 @@ main = do
                      <+> manageDocks 
                      <+> myManageHook 
                      <+> manageHook defaults
-        , layoutHook = layoutHook defaults
+        , layoutHook = myLayout 
         , logHook = dynamicLogWithPP xmobarPP
                         { ppOutput = hPutStrLn xmproc
                         , ppTitle = xmobarColor "green" "" . shorten 50
