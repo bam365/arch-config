@@ -1,5 +1,6 @@
 import XMonad
 import XMonad.Hooks.DynamicLog
+import qualified XMonad.Hooks.EwmhDesktops as EWMH
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.ResizableTile
@@ -7,8 +8,9 @@ import XMonad.Layout.Renamed
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Fullscreen
 import XMonad.Util.Run(spawnPipe)
-import XMonad.Util.EZConfig(additionalKeys)
+import XMonad.Util.EZConfig (additionalKeys, mkKeymap)
 import XMonad.Actions.CycleWS
+import Graphics.X11.ExtraTypes.XF86
 import System.IO
 import Data.Monoid
 import Data.Maybe
@@ -112,7 +114,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
  
     -- Move focus to the next window
     , ((modm,               xK_j     ), windows W.focusDown)
- 
+
     -- Move focus to the previous window
     , ((modm,               xK_k     ), windows W.focusUp  )
  
@@ -146,6 +148,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- App keys
     , ((modm .|. mod1Mask, xK_f), spawn "firefox")
+    , ((modm .|. mod1Mask, xK_b), spawn "chromium-browser")
 
     -- Cycling
     , ((modm,         xK_period), A.moveTo A.Next A.NonEmptyWS)
@@ -155,7 +158,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Nudging
     , ((modm,               xK_bracketleft), sendMessage MirrorShrink)
     , ((modm,               xK_bracketright), sendMessage MirrorExpand) 
- 
+
+    -- Audio shit
+    , ((0, xF86XK_AudioRaiseVolume), spawn "vol-up.sh")
+    , ((0, xF86XK_AudioLowerVolume), spawn "vol-down.sh")
+
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
     -- See also the statusBar function from Hooks.DynamicLog.
@@ -188,7 +195,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
- 
 
 -- Tag cycling stuff
 tagsWithStack :: WindowSet -> [WorkspaceId]
@@ -273,11 +279,16 @@ myLayout = avoidStruts layoutsWithBar
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
-myManageHook = composeAll
-    [ className =? "MPlayer"        --> doFloat
-    , className =? "Gimp"           --> doFloat
-    , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+myManageHook = 
+    manageDocks 
+    <+> composeOne
+          [ className =? "MPlayer"        -?> doFloat
+          , className =? "Gimp"           -?> doFloat
+          -- , resource  =? "desktop_window" --> doIgnore
+          -- , resource  =? "kdesktop"       --> doIgnore 
+          , isFullscreen -?> doFullFloat 
+          , not <$> isDialog -?> doF W.swapDown
+          ]
  
 ------------------------------------------------------------------------
 -- Event handling
@@ -291,7 +302,7 @@ myManageHook = composeAll
 -- It will add EWMH event handling to your custom event hooks by
 -- combining them with ewmhDesktopsEventHook.
 --
-myEventHook = docksEventHook
+myEventHook = docksEventHook <+> EWMH.fullscreenEventHook
  
 ------------------------------------------------------------------------
 -- Status bars and logging
@@ -330,14 +341,8 @@ myStartupHook = return ()
 --
 main = do 
     xmproc <- spawnPipe "xmobar /home/blake/.xmobarrc"
-    xmonad $ defaults
-        { manageHook = (isFullscreen --> doFullFloat) 
-                     <+> (not <$> isDialog --> doF W.swapDown)
-                     <+> manageDocks 
-                     <+> myManageHook 
-                     <+> manageHook defaults
-        , layoutHook = myLayout 
-        , logHook = dynamicLogWithPP xmobarPP
+    xmonad $ EWMH.ewmh defaults
+        { logHook = dynamicLogWithPP xmobarPP
                         { ppOutput = hPutStrLn xmproc
                         , ppTitle = xmobarColor "green" "" . shorten 50
                         }
