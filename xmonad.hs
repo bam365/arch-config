@@ -149,7 +149,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- App keys
     , ((modm .|. mod1Mask, xK_f), spawn "firefox")
-    , ((modm .|. mod1Mask, xK_b), spawn "chromium-browser")
+    , ((modm .|. mod1Mask, xK_b), spawn "chromium")
+    , ((modm .|. mod1Mask, xK_e), spawn "gvim")
 
     -- Cycling
     , ((modm,         xK_period), A.moveTo A.Next A.NonEmptyWS)
@@ -333,7 +334,7 @@ myLogHook = return ()
 -- It will add initialization of EWMH support to your custom startup
 -- hook by combining it with ewmhDesktopsStartup.
 --
-myStartupHook = setWMName "LG3D"
+myStartupHook = docksStartupHook <+> setWMName "LG3D"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
