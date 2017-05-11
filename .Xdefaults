@@ -3,7 +3,7 @@ Xft.antialias: true
 Xft.hinting:  true
 Xft.hintstyle:  hintfull
 Xft.rgba: none 
-!urxvt*font: xft:Terminus:size=10
+!urxvt*font: xft:DejaVu Sans Mono:size=10
 URxvt.scrollBar: false
 URxvt*font: xft:DejaVu Sans Mono:size=12
 
