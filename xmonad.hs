@@ -26,7 +26,7 @@ import qualified Data.Map        as M
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal      = "xterm"
+myTerminal      = "termite"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -93,7 +93,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- launch dmenu
     , ((modm,               xK_p     ), spawn "exe=`dmenu_run -fn \"DejaVu Sans Mono:size=10\"` && eval \"exec $exe\"")
 
-    , ((modm,               xK_Return), spawn "urxvt")
+    , ((modm,               xK_Return), spawn "myxterm")
 
     -- launch gmrun
     , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
@@ -150,7 +150,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- App keys
     , ((modm .|. mod1Mask, xK_f), spawn "firefox")
     , ((modm .|. mod1Mask, xK_b), spawn "chromium")
-    , ((modm .|. mod1Mask, xK_e), spawn "gvim")
+    , ((modm .|. mod1Mask, xK_e), spawn "myxterm -e nvim")
 
     -- Cycling
     , ((modm,         xK_period), A.moveTo A.Next A.NonEmptyWS)
@@ -346,8 +346,8 @@ main = do
     xmonad $ EWMH.ewmh defaults
         { logHook = dynamicLogWithPP xmobarPP
                         { ppOutput = hPutStrLn xmproc
-                        , ppTitle = xmobarColor "#9fc59f" "" . shorten 50
-                        , ppCurrent = xmobarColor "#93e0e3" "" . wrap "▸" ""
+                        , ppTitle = xmobarColor "#b8bb26" "" . shorten 50
+                        , ppCurrent = xmobarColor "#83a598" "" . wrap "▸" ""
                         }
         }
 
