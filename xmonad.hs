@@ -78,8 +78,7 @@ myModMask       = mod4Mask
 myWorkspaces    = ["web","util","wk1","wk2","wk3","wk4","play","sys","9"]
 
 -- Border colors for unfocused and focused windows, respectively.
---
-myNormalBorderColor  = "#dddddd"
+myNormalBorderColor  = "#a89984"
 myFocusedBorderColor = "#ffff00"
 
 ------------------------------------------------------------------------
@@ -251,7 +250,7 @@ myLayout = avoidStruts layoutsWithBar
            ||| renamed [Replace "full"] (noBorders . fullscreenFull $ Full)
   where
     -- default tiling algorithm partitions the screen into two panes
-    tiled   = S.spacing 3 $ ResizableTall nmaster delta ratio []
+    tiled   = S.spacing 7 $ ResizableTall nmaster delta ratio []
 
     -- The default number of windows in the master pane
     nmaster = 1
