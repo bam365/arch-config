@@ -1,0 +1,6 @@
+set status-show-untracked-files = yes
+
+bind refs M !?git merge %(branch)
+bind refs P !git po
+bind refs F !git pull
+bind refs B !git co -b "%(prompt New branch name: )"
