@@ -26,7 +26,7 @@ import qualified Data.Map        as M
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal      = "xterm"
+myTerminal      = "termite"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -78,8 +78,7 @@ myModMask       = mod4Mask
 myWorkspaces    = ["web","util","wk1","wk2","wk3","wk4","play","sys","9"]
 
 -- Border colors for unfocused and focused windows, respectively.
---
-myNormalBorderColor  = "#dddddd"
+myNormalBorderColor  = "#a89984"
 myFocusedBorderColor = "#ffff00"
 
 ------------------------------------------------------------------------
@@ -93,7 +92,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- launch dmenu
     , ((modm,               xK_p     ), spawn "exe=`dmenu_run -fn \"DejaVu Sans Mono:size=10\"` && eval \"exec $exe\"")
 
-    , ((modm,               xK_Return), spawn "urxvt")
+    , ((modm,               xK_Return), spawn "myxterm")
 
     -- launch gmrun
     , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
@@ -149,7 +148,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- App keys
     , ((modm .|. mod1Mask, xK_f), spawn "firefox")
-    , ((modm .|. mod1Mask, xK_b), spawn "chromium-browser")
+    , ((modm .|. mod1Mask, xK_b), spawn "chromium")
+    , ((modm .|. mod1Mask, xK_e), spawn "myxterm -e nvim")
 
     -- Cycling
     , ((modm,         xK_period), A.moveTo A.Next A.NonEmptyWS)
@@ -250,7 +250,7 @@ myLayout = avoidStruts layoutsWithBar
            ||| renamed [Replace "full"] (noBorders . fullscreenFull $ Full)
   where
     -- default tiling algorithm partitions the screen into two panes
-    tiled   = S.spacing 3 $ ResizableTall nmaster delta ratio []
+    tiled   = S.spacing 7 $ ResizableTall nmaster delta ratio []
 
     -- The default number of windows in the master pane
     nmaster = 1
@@ -333,7 +333,7 @@ myLogHook = return ()
 -- It will add initialization of EWMH support to your custom startup
 -- hook by combining it with ewmhDesktopsStartup.
 --
-myStartupHook = setWMName "LG3D"
+myStartupHook = docksStartupHook <+> setWMName "LG3D"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
@@ -345,8 +345,8 @@ main = do
     xmonad $ EWMH.ewmh defaults
         { logHook = dynamicLogWithPP xmobarPP
                         { ppOutput = hPutStrLn xmproc
-                        , ppTitle = xmobarColor "#9fc59f" "" . shorten 50
-                        , ppCurrent = xmobarColor "#93e0e3" "" . wrap "▸" ""
+                        , ppTitle = xmobarColor "#b8bb26" "" . shorten 50
+                        , ppCurrent = xmobarColor "#83a598" "" . wrap "▸" ""
                         }
         }
 

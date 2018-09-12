@@ -1,14 +1,13 @@
 Config { font = "xft:DejaVu Sans Mono:size=11"
-       , bgColor = "#3f3f3f"
-       , fgColor = "#dcdccc"
+       , bgColor = "#282828"
+       , fgColor = "#ebdbb2"
        , position = Bottom
        , commands = [ Run Cpu ["-t", "C: <total>","-L","3","-H","50","--normal","green","--high","red"] 10
                     , Run Memory ["-t","M: <usedratio>"] 10
                     , Run DynNetwork ["-t", "N: <rx>/<tx>"] 10
                     , Run Date "%I:%M %p %m/%_d " "date" 10
                     , Run StdinReader
-                    ]
-       , sepChar = "%"
+                    ] , sepChar = "%"
        , alignSep = "}{"
        , template = "%StdinReader% }{ [%cpu%] [%memory%] [%dynnetwork%]  %date%"
        }
