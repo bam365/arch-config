@@ -1,4 +1,7 @@
 set status-show-untracked-files = yes
+set main-view = date:relative-compact author:abbreviated  commit-title:yes,graph=v2,refs
+set refs-view = date:relative-compact author:abbreviated ref commit-title
+set line-graphics = utf-8
 
 bind refs M !?git merge %(branch)
 bind refs P !git po
