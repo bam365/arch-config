@@ -8,15 +8,20 @@ import XMonad.Layout.ResizableTile
 import XMonad.Layout.Renamed
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Fullscreen
-import XMonad.Util.Run(spawnPipe)
+import qualified XMonad.StackSet as W
+import XMonad.Util.NamedWindows (getName)
+import XMonad.Util.Run (safeSpawn, spawnPipe)
 import XMonad.Util.EZConfig (additionalKeys, mkKeymap)
 import XMonad.Actions.CycleWS
 import Graphics.X11.ExtraTypes.XF86
 import System.IO
+import Data.List (intersect, sortBy)
+import Data.Function (on)
 import Data.Monoid
 import Data.Maybe
 import System.Exit
 import Control.Applicative ((<$>))
+import Control.Monad (forM_, join)
 
 import qualified XMonad.StackSet as W
 import qualified XMonad.Layout.Spacing as S
@@ -27,6 +32,7 @@ import qualified Data.Map        as M
 -- certain contrib modules.
 --
 myTerminal      = "termite"
+dmenuCmd = "dmenu_run -fn \"Misc Tamsyn\" -nb \"#282828\" -nf \"#b8bb26\" -sb \"#689d6a\" -sf \"#ebdbb2\""
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -78,8 +84,8 @@ myModMask       = mod4Mask
 myWorkspaces    = ["web","util","wk1","wk2","wk3","wk4","play","sys","9"]
 
 -- Border colors for unfocused and focused windows, respectively.
-myNormalBorderColor  = "#a89984"
-myFocusedBorderColor = "#ffff00"
+myNormalBorderColor  = "#282828"
+myFocusedBorderColor = "#b8bb26"
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -90,7 +96,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
     -- launch dmenu
-    , ((modm,               xK_p     ), spawn "exe=`dmenu_run -fn \"DejaVu Sans Mono:size=10\"` && eval \"exec $exe\"")
+    , ((modm,               xK_p     ), spawn ("exe=`" ++ dmenuCmd ++ "` && eval \"exec $exe\""))
 
     , ((modm,               xK_Return), spawn "myxterm")
 
@@ -174,7 +180,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
 
     -- Restart xmonad
-    , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
+    , ((modm              , xK_q     ), spawn "stack exec -- xmonad --recompile; stack exec -- xmonad --restart")
     ]
     ++
 
@@ -250,7 +256,7 @@ myLayout = avoidStruts layoutsWithBar
            ||| renamed [Replace "full"] (noBorders . fullscreenFull $ Full)
   where
     -- default tiling algorithm partitions the screen into two panes
-    tiled   = S.spacing 7 $ ResizableTall nmaster delta ratio []
+    tiled   = S.smartSpacing 7 $ ResizableTall nmaster delta ratio []
 
     -- The default number of windows in the master pane
     nmaster = 1
@@ -335,20 +341,55 @@ myLogHook = return ()
 --
 myStartupHook = docksStartupHook <+> setWMName "LG3D"
 
+
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
--- Run xmonad with the settings you specify. No need to modify this.
---
-main = do
+mainXmobar = do
     xmproc <- spawnPipe "xmobar /home/blake/.xmobarrc"
     xmonad $ EWMH.ewmh defaults
         { logHook = dynamicLogWithPP xmobarPP
                         { ppOutput = hPutStrLn xmproc
                         , ppTitle = xmobarColor "#b8bb26" "" . shorten 50
-                        , ppCurrent = xmobarColor "#83a598" "" . wrap "▸" ""
+                        , ppCurrent = xmobarColor "#83a598" "" . wrap "*" ""
                         }
         }
+
+mainPolybar = do
+    forM_ [".xmonad-workspace-log", ".xmonad-title-log", ".xmonad-layout-log"] $ \file -> do
+        safeSpawn "mkfifo" ["/tmp/" ++ file]
+    polybarProc <- spawnPipe "polybar xmonad-gruvbox"
+    xmonad $ EWMH.ewmh defaults
+        { logHook = eventLogHook
+        }
+
+-- Run xmonad with the settings you specify. No need to modify this.
+--
+main = mainPolybar
+
+eventLogHook = do
+    winset <- gets windowset
+    title <- maybe (return "") (fmap show . getName) . W.peek $ winset
+    let currWs = W.currentTag winset
+    let layout = description . W.layout . W.workspace . W.current $ winset
+    -- let wss = map W.tag $ W.workspaces winset
+    let wss = intersect myWorkspaces $ map W.tag $ filter (isVisible currWs)
+                $ W.workspaces winset
+    let wsStr = join $ map (fmt currWs) $ wss
+    appendLog "/tmp/.xmonad-title-log" title
+    appendLog "/tmp/.xmonad-workspace-log" wsStr
+    appendLog "/tmp/.xmonad-layout-log" layout
+ where
+    appendLog f s = io $ appendFile f (s ++ "\n")
+    fmt currWs ws 
+        | currWs == ws = "%{F#b8bb26}[" ++ ws ++ "]%{F-}"
+        | otherwise    = " " ++ ws ++ " "
+    isVisible currWs ws = (isJust (W.stack ws)) || (currWs == (W.tag ws))
+
+
+    -- sort' = sortBy (compare `on` (!! 0))
+
+
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
