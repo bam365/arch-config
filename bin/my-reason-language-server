@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if exists-up-tree.py esy.json; then
+    ocamllsp-wrapper
+else
+    reason-language-server
+fi
