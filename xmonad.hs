@@ -1,4 +1,5 @@
 import XMonad
+import XMonad.Actions.CycleWS (WSType(Not))
 import XMonad.Hooks.DynamicLog
 import qualified XMonad.Hooks.EwmhDesktops as EWMH
 import XMonad.Hooks.ManageDocks
@@ -158,8 +159,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. mod1Mask, xK_e), spawn "myxterm -e nvim")
 
     -- Cycling
-    , ((modm,         xK_period), A.moveTo A.Next A.NonEmptyWS)
-    , ((modm,         xK_comma ), A.moveTo A.Prev A.NonEmptyWS)
+    , ((modm,         xK_period), A.moveTo A.Next (Not A.emptyWS))
+    , ((modm,         xK_comma ), A.moveTo A.Prev (Not A.emptyWS))
     , ((modm,         xK_Tab   ), A.toggleWS)
 
     -- Nudging
@@ -309,7 +310,8 @@ myManageHook =
 -- It will add EWMH event handling to your custom event hooks by
 -- combining them with ewmhDesktopsEventHook.
 --
-myEventHook = docksEventHook <+> EWMH.fullscreenEventHook
+-- myEventHook = EWMH.ewmhFullscreen
+-- myEventHook = return ()
 
 ------------------------------------------------------------------------
 -- Status bars and logging
@@ -339,7 +341,7 @@ myLogHook = return ()
 -- It will add initialization of EWMH support to your custom startup
 -- hook by combining it with ewmhDesktopsStartup.
 --
-myStartupHook = docksStartupHook <+> setWMName "LG3D"
+myStartupHook = setWMName "LG3D"
 
 
 ------------------------------------------------------------------------
@@ -359,7 +361,7 @@ mainPolybar = do
     forM_ [".xmonad-workspace-log", ".xmonad-title-log", ".xmonad-layout-log"] $ \file -> do
         safeSpawn "mkfifo" ["/tmp/" ++ file]
     polybarProc <- spawnPipe "polybar xmonad-gruvbox"
-    xmonad $ EWMH.ewmh defaults
+    xmonad $ EWMH.ewmh . docks . EWMH.ewmhFullscreen $ defaults
         { logHook = eventLogHook
         }
 
@@ -382,9 +384,9 @@ eventLogHook = do
  where
     appendLog f s = io $ appendFile f (s ++ "\n")
     fmt currWs ws 
-        | currWs == ws = "%{F#b8bb26}[" ++ ws ++ "]%{F-}"
+        | currWs == ws = "%{F#b8bb26}*" ++ ws ++ "%{F-} "
         | otherwise    = " " ++ ws ++ " "
-    isVisible currWs ws = (isJust (W.stack ws)) || (currWs == (W.tag ws))
+    isVisible currWs ws = isJust (W.stack ws) || (currWs == W.tag ws)
 
 
     -- sort' = sortBy (compare `on` (!! 0))
@@ -397,7 +399,7 @@ eventLogHook = do
 --
 -- No need to modify this.
 --
-defaults = defaultConfig {
+defaults = def {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
@@ -416,7 +418,7 @@ defaults = defaultConfig {
       -- hooks, layouts
         layoutHook         = myLayout,
         manageHook         = myManageHook,
-        handleEventHook    = myEventHook,
+        -- handleEventHook    = myEventHook,
         logHook            = myLogHook,
         startupHook        = myStartupHook
     }
