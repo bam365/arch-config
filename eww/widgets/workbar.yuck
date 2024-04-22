@@ -1,0 +1,44 @@
+; Hyprwwland Copyright (c) 2023 darkmaster grm34.
+; https://github.com/grm34/Hyprwwland
+
+
+(defvar workspacedefs '[
+  {"id": 1, "name": "web"},
+  {"id": 2, "name": "utl"},
+  {"id": 3, "name": "wk1"},
+  {"id": 4, "name": "wk2"},
+  {"id": 5, "name": "wk3"},
+  {"id": 6, "name": "wk4"},
+  {"id": 7, "name": "ply"},
+  {"id": 8, "name": "sys"},
+  {"id": 9, "name": "9"}]'
+)
+
+(deflisten workspaces :initial '{
+    "activeTitle": "",
+    "isFullscreen": false,
+    "workspaces": [
+      { "index": "1", "class": "ws-active", "icon": "web" }
+    ]
+  }'
+  "scripts/workspaces_manager"
+)
+
+(defwidget workbar []
+  (box :class "workbar"
+       :orientation "h"
+       :halign "start"
+       :spacing 14 
+
+    (box :halign "start"
+         :orientation "h"
+         :spacing 7
+      (for ws in {workspaces.workspacedata}
+        (button :class {ws.class}
+                :onclick "hyprctl dispatch workspace ${ws.index}"
+          (label :text {ws.icon}))))
+
+    (box :halign "start"
+         :spacing 1
+      (label :text {workspaces.isFullscreen ? "F" : ""}))))
+

@@ -1,0 +1,30 @@
+/* Hyprwwland Copyright (c) 2023 darkmaster grm34.
+ * https://github.com/grm34/Hyprwwland
+ */
+
+$accent-color: #fa6b34;
+
+* {
+  all: unset;
+}
+
+* {
+  color: #ebdbb2;
+  background-color: #282828;
+  font-family: 'IBM Plex Mono';
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.mainbox {
+  padding: 5px;
+  border-bottom: 2px solid $accent-color;
+}
+
+button.ws-active > label {
+  color: $accent-color;
+}
+
+.ws-active {
+  color: #00FF00;
+}

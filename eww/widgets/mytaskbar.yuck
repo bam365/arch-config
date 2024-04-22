@@ -1,0 +1,42 @@
+(defvar date_visible false)
+
+(deflisten netusage :initial "" 
+  "network-traffic.sh")
+
+(defpoll datetime :interval "10s" :initial "{}"
+  "scripts/taskbar_manager datetime")
+
+(defwidget datetimebox [] 
+    (eventbox :class "datetime-revealer"
+              :cursor "pointer"
+              :onhover "${EWW_CMD} update date_visible=true"
+              :onhoverlost "${EWW_CMD} update date_visible=false"
+      (button :timeout "1s"
+              :onclick "scripts/taskmenu_manager 5"
+              :onrightclick "${EWW_CMD} close taskmenu"  
+        (box :space-evenly false
+
+          ; Time (visible).
+          (revealer :reveal {!date_visible}
+                    :transition "slideleft"
+                    :duration "250ms"
+            (label :class "datetime-revealer-time"
+                   :text {datetime.time}))
+
+          ; Date (onhover).
+          (revealer :reveal {date_visible}
+                    :transition "slideright"
+                    :duration "250ms"
+            (label :class "datetime-revealer-date"
+                   :text {datetime.date}))))))
+
+(defwidget mytaskbar []
+  (box :class "taskbar"
+       :orientation "h"
+       :halign "end"
+       :space-evenly false
+       :spacing 15 
+    (label :text "C: ${round(EWW_CPU.avg, 0)}")
+    (label :text "M: ${round(EWW_RAM.used_mem_perc, 0)}")
+    (label :text "N: ${netusage}")
+    (datetimebox)))
