@@ -3,7 +3,7 @@
 (deflisten netusage :initial "" 
   "network-traffic.sh")
 
-(defpoll datetime :interval "10s" :initial "{}"
+(defpoll datetime :interval "5s" :initial "{}"
   "scripts/taskbar_manager datetime")
 
 (defwidget datetimebox [] 

@@ -22,11 +22,11 @@ case $1 in
     fi
     ;;
   datetime)
-    readarray -td/ date < <(date '+%d/%m/%Y/%H:%M/')
+    readarray -td/ date < <(date '+%_m/%_d/%Y/%_I:%M/')
     printf \
     '{"date":"%s","time":"%s","day":"%s","month":"%s","year":"%s"}' \
       "${date[0]}/${date[1]}/${date[2]}" "${date[3]}" \
-      "${date[0]}" "${date[1]}" "${date[2]}"
+      "${date[1]}" "${date[0]}" "${date[2]}"
     ;;
 esac
 
