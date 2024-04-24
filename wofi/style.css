@@ -1,0 +1,22 @@
+window, #input {
+	font-family: 'Cousine Nerd Font Mono';
+	background-color: #282828;
+	color: #ebdbb2;
+}
+
+window {
+	border: 3px solid #fa6b34;
+}
+
+#input {
+	border: 2px solid #888888;
+}
+
+#outer-box {
+	margin: 10px;
+}
+
+#entry:selected, #text:selected {
+	background-color: #444444;
+	color: #fa6b34;
+}
