@@ -3,6 +3,9 @@
 (deflisten netusage :initial "" 
   "network-traffic.sh")
 
+(defpoll volume :interval "2s" :initial ""
+  "pamixer --get-volume")
+
 (defpoll datetime :interval "5s" :initial "{}"
   "scripts/taskbar_manager datetime")
 
@@ -39,4 +42,5 @@
     (label :text "C: ${round(EWW_CPU.avg, 0)}")
     (label :text "M: ${round(EWW_RAM.used_mem_perc, 0)}")
     (label :text "N: ${netusage}")
+    (label :text "V: ${volume}")
     (datetimebox)))
