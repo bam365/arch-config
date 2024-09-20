@@ -7,11 +7,10 @@
 }
 
 button {
+    all: unset;
     min-width: 0;
     padding: 0;
     border: 0;
-    color: #ebdbb2;
-    background-color: #282828;
 }
 
 .bar-window {
@@ -19,9 +18,15 @@ button {
 
 .bar {
     border-bottom: 2px solid #fa6b34;
-    padding: 5px;
+    padding: 6px;
+}
+
+button.focused label {
+    color: #fa6b34; 
+    background-color: #282828;
 }
 
 .network {
     min-width: 80px;
 }
+

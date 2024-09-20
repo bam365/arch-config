@@ -26,7 +26,7 @@ const time = Variable("", { poll: [1000, "date  '+%_I:%M'"] })
 
 const date = Variable("", { poll: [1000, "date  '+%_m/%_d/%Y'"] })
 
-const showDate = Variable(true)
+const showDate = Variable(false)
 
 const Clock = () => Widget.Button({
     on_clicked: () => showDate.setValue(!showDate.getValue()),
@@ -75,17 +75,17 @@ const ClientInfo = () => Widget.Label({
 })
 
 const Labeled = (lbl, widget) => Widget.Box({
+    spacing: 4,
     children: [Widget.Label(lbl), widget]
 })
 
 const StatusMonitor = () => Widget.Box({
-    spacing: 10,
+    spacing: 12,
     children: [
-        //Labeled("C: ", Widget.LevelBar({ bar_mode: "continuous", max_value: 100, value: cpu.bind() })),
-        Labeled("C: ", Widget.Label({ label: cpu2.bind().as(v => `${v}`) })),
-        Labeled("M: ", Widget.Label({ label: ram.bind().as(v => `${v}`) })),
-        Labeled("N: ", Widget.Label({ class_name: "network", label: network.bind().as(v => `${v}`) })),
-        Labeled("V: ", Widget.Label({ label: volume.bind().as(v => `${v}`) })),
+        Labeled("C:", Widget.Label({ label: cpu2.bind().as(v => `${v}`) })),
+        Labeled("M:", Widget.Label({ label: ram.bind().as(v => `${v}`) })),
+        Labeled("N:", Widget.Label({ class_name: "network", label: network.bind().as(v => `${v}`) })),
+        Labeled("V:", Widget.Label({ label: volume.bind().as(v => `${v}`) })),
     ]
 })
 
@@ -110,11 +110,6 @@ const RightBox = () => Widget.Box({
     homogeneous: false,
     spacing: 14,
     children: [StatusMonitor(), SysTray(), Clock()]
-    /*
-    startWidget: StatusMonitor(),
-    centerWidget: SysTray(),
-    endWidget: Clock(),
-    */
 })
 
 const Bar = (monitor = 0) => Widget.Window({
