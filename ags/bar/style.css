@@ -1,0 +1,27 @@
+* {
+    color: #ebdbb2;
+    background-color: #282828;
+    font-family: 'Cousine Nerd Font Mono';
+    font-size: 15px;
+    font-weight: 600;
+}
+
+button {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    color: #ebdbb2;
+    background-color: #282828;
+}
+
+.bar-window {
+}
+
+.bar {
+    border-bottom: 2px solid #fa6b34;
+    padding: 5px;
+}
+
+.network {
+    min-width: 80px;
+}
