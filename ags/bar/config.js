@@ -53,11 +53,13 @@ const HyprlandFullscreen = () => Widget.Label({
 const Workspaces = () => {
     const activeId = hyprland.active.workspace.bind("id")
     const workspaces = hyprland.bind("workspaces").as(ws => 
-        ws.map(({ id, name }) => Widget.Button({
-            on_clicked: () => hyprland.messageAsync(`dispatch workspace ${id}`),
-            child: Widget.Label(`${name}`),
-            class_name: activeId.as(i => `${i === id ? "focused" : ""}`),
-        }))
+        ws
+            .sort((a, b) => a.id - b.id)
+            .map(({ id, name }) => Widget.Button({
+                on_clicked: () => hyprland.messageAsync(`dispatch workspace ${id}`),
+                child: Widget.Label(`${name}`),
+                class_name: activeId.as(i => `${i === id ? "focused" : ""}`),
+            }))
     )
     return Widget.Box({
         class_name: "workspaces",
@@ -84,8 +86,8 @@ const StatusMonitor = () => Widget.Box({
     children: [
         Labeled("C:", Widget.Label({ label: cpu2.bind().as(v => `${v}`) })),
         Labeled("M:", Widget.Label({ label: ram.bind().as(v => `${v}`) })),
-        Labeled("N:", Widget.Label({ class_name: "network", label: network.bind().as(v => `${v}`) })),
         Labeled("V:", Widget.Label({ label: volume.bind().as(v => `${v}`) })),
+        Labeled("N:", Widget.Label({ class_name: "network", label: network.bind().as(v => `${v}`) })),
     ]
 })
 
