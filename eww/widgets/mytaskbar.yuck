@@ -1,6 +1,6 @@
 (defvar date_visible false)
 
-(deflisten netusage :initial "" 
+(deflisten mynetusage :initial "" 
   "network-traffic.sh")
 
 (defpoll volume :interval "2s" :initial ""
@@ -41,6 +41,6 @@
        :spacing 15 
     (label :text "C: ${round(EWW_CPU.avg, 0)}")
     (label :text "M: ${round(EWW_RAM.used_mem_perc, 0)}")
-    (label :text "N: ${netusage}")
+    (label :text "N: ${mynetusage}")
     (label :text "V: ${volume}")
     (datetimebox)))

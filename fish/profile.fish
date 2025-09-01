@@ -9,6 +9,8 @@ set -gx PATH $HOME/.local/bin \
              $HOME/.ghcup/bin \
              $HOME/.cabal/bin \
              $HOME/.dotnet/tools \
+             $HOME/.cargo/bin \
+             $HOME/.nix-profile/bin \
              $FNM_INSTALL \
              $BUN_INSTALL \
              $PATH
