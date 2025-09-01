@@ -7,3 +7,4 @@ ln -s $CONFIGDIR/eww .
 ln -s $CONFIGDIR/dunst .
 ln -s $CONFIGDIR/ags .
 ln -s $CONFIGDIR/fish .
+ln -s $CONFIGDIR/ags3 .
