@@ -1,4 +1,3 @@
-import { createComputed, createBinding } from "ags"
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
 
@@ -36,9 +35,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
             <centerbox cssName="centerbox">
                 <box spacing={8} $type="start">
                     <HyprlandWorkspaces />
-                    <box halign={Gtk.Align.END}>
-                        <HyprlandFullscreen />
-                    </box>
+                    <HyprlandFullscreen />
                 </box>
                 <box $type="center">
                     <HyprlandTitle />
