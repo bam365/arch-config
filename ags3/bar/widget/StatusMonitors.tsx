@@ -29,7 +29,7 @@ export function MemoryMonitor() {
 
 export function VolumeMonitor() {
     const vol = createPoll("", 2000, "pamixer --get-volume")
-    return labeled("M:", <With value={vol}>{(vol) => <label label={vol} />}</With>)
+    return labeled("V:", <With value={vol}>{(vol) => <label label={vol} />}</With>)
 }
 
 export function NetMonitor() {
