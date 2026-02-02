@@ -8,3 +8,5 @@ ln -s $CONFIGDIR/dunst .
 ln -s $CONFIGDIR/ags .
 ln -s $CONFIGDIR/fish .
 ln -s $CONFIGDIR/ags3 .
+ln -s $CONFIGDIR/niri .
+ln -s $CONFIGDIR/noctalia .
