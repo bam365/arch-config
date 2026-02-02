@@ -398,6 +398,7 @@ binds {
     Super+Alt+L { spawn "swaylock"; }
     Mod+P { spawn "wofi" "--show" "run"; }
     Mod+Return { spawn "alacritty"; }
+    Mod+Alt+F { spawn "firefox"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument in the end.
@@ -543,8 +544,8 @@ binds {
     // The following binds move the focused window in and out of a column.
     // If the window is alone, they will consume it into the nearby column to the side.
     // If the window is already in a column, they will expel it out.
-    //Mod+BracketLeft  { consume-or-expel-window-left; }
-    //Mod+BracketRight { consume-or-expel-window-right; }
+    Mod+BracketLeft  { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
     Mod+Ctrl+H { consume-or-expel-window-left; }
     Mod+Ctrl+L { consume-or-expel-window-right; }
     Mod+Shift+H { swap-window-left; }
@@ -581,7 +582,7 @@ binds {
     Mod+Equal { set-column-width "+2%"; }
     Mod+Shift+U { move-column-left; }
     Mod+Shift+I { move-column-right; }
-    Mod+Ctrl+I { set-column-width "100%"; }
+    Mod+Ctrl+I { expand-column-to-available-width; }
     // Finer height adjustments when in column with other windows.
     Mod+Shift+J { set-window-height "-2.5%"; }
     Mod+Shift+K { set-window-height "+2.5%"; }
@@ -593,7 +594,7 @@ binds {
     // Toggle tabbed column display mode.
     // Windows in this column will appear as vertical tabs,
     // rather than stacked on top of each other.
-    Mod+W { toggle-column-tabbed-display; }
+    Mod+B { toggle-column-tabbed-display; }
 
     // Actions to switch layouts.
     // Note: if you uncomment these, make sure you do NOT have
