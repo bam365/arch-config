@@ -335,6 +335,12 @@ animations {
     // slowdown 3.0
 }
 
+gestures {
+    hot-corners {
+        off
+    }
+}
+
 // Window rules let you adjust behavior for individual windows.
 // Find more information on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
@@ -406,8 +412,8 @@ binds {
 
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.01+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.01-"; }
     XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
     XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
 
@@ -576,13 +582,20 @@ binds {
     // * adjust width as a percentage of screen width: "-10%" or "+10%"
     // Pixel sizes use logical, or scaled, pixels. I.e. on an output with scale 2.0,
     // set-column-width "100" will make the column occupy 200 physical screen pixels.
-    Mod+U { switch-preset-column-width-back; }
-    Mod+I { switch-preset-column-width; }
+
+    // This is like switch-preset-column-width, except that if the window
+    // is in the first column and there is more than one column, it will
+    // also correspondingly shrink the second column to fit it in the viewport.
+    // This somewhat emulates the behavior of dynamic tilers in the two-column
+    // layout case
+    Mod+U { spawn-sh "niri-smart-shrink"; }
+    Mod+I { spawn-sh "niri-smart-expand"; }
     Mod+Minus { set-column-width "-2%"; }
     Mod+Equal { set-column-width "+2%"; }
     Mod+Shift+U { move-column-left; }
     Mod+Shift+I { move-column-right; }
     Mod+Ctrl+I { expand-column-to-available-width; }
+
     // Finer height adjustments when in column with other windows.
     Mod+Shift+J { set-window-height "-2.5%"; }
     Mod+Shift+K { set-window-height "+2.5%"; }
