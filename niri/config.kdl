@@ -404,7 +404,7 @@ binds {
     Super+Alt+L { spawn "swaylock"; }
     Mod+P { spawn "wofi" "--show" "run"; }
     Mod+Return { spawn "alacritty"; }
-    Mod+Alt+F { spawn "firefox"; }
+    Mod+Alt+F { spawn "firefox" "--new-window" "https://news.ycombinator.com"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument in the end.
@@ -590,8 +590,8 @@ binds {
     // layout case
     Mod+U { spawn-sh "niri-smart-shrink"; }
     Mod+I { spawn-sh "niri-smart-expand"; }
-    Mod+Minus { set-column-width "-2%"; }
-    Mod+Equal { set-column-width "+2%"; }
+    Mod+Minus { spawn-sh "niri-smart-shrink 1"; }
+    Mod+Equal { spawn-sh "niri-smart-expand 1"; }
     Mod+Shift+U { move-column-left; }
     Mod+Shift+I { move-column-right; }
     Mod+Ctrl+I { expand-column-to-available-width; }
