@@ -4,7 +4,6 @@ set -gx BUN_INSTALL "$HOME/.bun"
 # Node version manager
 set -gx FNM_INSTALL "$HOME/.fnm"
 
-
 set -gx PATH $HOME/.local/bin \
              $HOME/.ghcup/bin \
              $HOME/.cabal/bin \
@@ -14,6 +13,8 @@ set -gx PATH $HOME/.local/bin \
              $FNM_INSTALL \
              $BUN_INSTALL \
              $PATH
+
+set -gx EDITOR "nvim"
 
 # Opam
 test -r $HOME/.opam/opam-init/init.fish && . $HOME/.opam/opam-init/init.fish > /dev/null 2> /dev/null || true

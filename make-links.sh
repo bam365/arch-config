@@ -7,6 +7,7 @@ ln -s $CONFIGDIR/eww .
 ln -s $CONFIGDIR/dunst .
 ln -s $CONFIGDIR/ags .
 ln -s $CONFIGDIR/fish .
+ln -s $CONFIGDIR/foot .
 ln -s $CONFIGDIR/ags3 .
 ln -s $CONFIGDIR/niri .
 ln -s $CONFIGDIR/noctalia .
